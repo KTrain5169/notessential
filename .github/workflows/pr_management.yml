@@ -24,6 +24,13 @@ jobs:
       - name: Label PR based on content
         if: github.event.action != 'labeled'
         id: label-pr
+        uses: fuxingloh/multi-labeler@v4.0.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          config-path: .github/labeler.yml
+      - name: Label PR if it cannot be merged
+        if: github.event.action == 'opened' || github.event.action == 'synchronise'
+        id: merge-conflict-check
         uses: prulloac/configurable-pr-labeler@v1.1.2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
